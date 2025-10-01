@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<main>
+  <div class="genre-container">
+    <% for(let genre of genres){ %>
+      <div class="genre">
+        <h3><%= genre.title %></h3> 
+        <p><%= genre.description %></p> 
+        <form action="/request" method="POST"> 
+          <!-- Hidden field sends genre -->
+          <input type="hidden" name="genre" value="<%= genre.title %>">
+          <button type="submit" name="type" value="request" class="btn">REQUEST</button>
+          <button type="submit" name="type" value="suggest" class="btn">SUGGEST</button>
+        </form> 
+      </div>
+    <% } %>
+  </div>
+</main>
+<%- include('partials/footer') %>

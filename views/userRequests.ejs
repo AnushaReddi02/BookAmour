@@ -1,0 +1,59 @@
+<%- include('partials/header.ejs') %>
+
+<main>
+    <div class="requests-container">
+        <h2>All Requests</h2>
+
+        <!-- Buttons -->
+        <div style="margin-bottom: 20px;">
+            <a href="/request" class="btn" style="background:#4CAF50;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin-right:10px;">
+                Make a Request
+            </a>
+            <a href="/myRequests" class="btn" style="background:#2196F3;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;">
+                View Your Requests
+            </a>
+        </div>
+
+        <% if (requests.length === 0) { %>
+            <p style="text-align: center;">No requests found.</p>
+        <% } else { %>
+            <% requests.forEach(request => { %>
+                <div class="request-card">
+                    <h3><%= request.genre %></h3>
+                    <p><strong>REQUEST:</strong> <%= request.description %></p>
+
+                    <% if (request.book_image) { %>
+                        <img src="/uploads/<%= request.book_image %>" alt="Request Image" class="request-image">
+                    <% } %>
+
+                    <p><strong>Posted by:</strong> <%= request.username %> (<%= request.email %>)</p>
+                    <p><small><%= new Date(request.created_at).toLocaleString() %></small></p>
+
+                    <form action="/suggest/<%= request.id %>" method="GET" style="display:inline;">
+                        <button type="submit" class="btn-suggest">Suggest (<%= request.suggestions_count || 0 %>)</button>
+                    </form>
+
+                    <form action="/like/<%= request.id %>" method="POST" style="display:inline;">
+                        <button type="submit" class="btn-like">👍 Like (<%= request.likes || 0 %>)</button>
+                    </form>
+                    <form action="/dislike/<%= request.id %>" method="POST" style="display:inline;">
+                        <button type="submit" class="btn-dislike">👎 Dislike (<%= request.dislikes || 0 %>)</button>
+                    </form>
+
+                    <% if (request.suggestions.length > 0) { %>
+                        <div class="suggestions">
+                            <h4>Suggestions:</h4>
+                            <ul>
+                                <% request.suggestions.forEach(s => { %>
+                                    <li><%= s.description %> — <small><%= s.username %></small></li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+</main>
+
+<%- include('partials/footer.ejs') %>

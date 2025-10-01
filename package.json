@@ -1,0 +1,20 @@
+{
+  "name": "shelflove",
+  "version": "1.0.0",
+  "description": "BookAmour is an interactive community platform for book lovers to explore genres, share recommendations, request suggestions, and connect with fellow readers. It features user authentication, genre-based browsing, suggestion posting, and a request system to foster a thriving book-loving community.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anusha Reddi",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^10.0.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.15.1",
+    "sweetalert2": "^11.23.0"
+  }
+}

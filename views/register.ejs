@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+<main>
+
+    <div class="reg-wrapper">
+
+        <form class="reg-container" id="registerForm">
+        <label for="fname">First Name</label> <br />
+        <input type="text" name="fname" id="fname" placeholder="Enter your First Name here" required> <br />
+        
+        <label for="lname">Last Name</label> <br />
+        <input type="text" name="lname" id="lname" placeholder="Enter your Last Name here" required> <br />
+
+        <label for="email">Email</label> <br />
+        <input type="email" name="email" id="email" placeholder="Enter your Email here" required autocomplete="email" autofill> <br />
+
+        <label for="password">Password</label> <br />
+        <input type="password" name="password" id="password" placeholder="Enter your password here" required  autocomplete="current-password" autofill> <br />
+
+         <p>Already have an account? <span><a href="http://localhost:8080/login">Log in</a></span></p><br /> <br />
+
+          <button class="btn">Register</button>
+
+      </form>
+
+</main>
+<%- include('partials/footer') %></div>
+<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+<main>
+
+    <div class="log-wrapper">
+
+        <form class="log-container" id="loginForm">
+        <label for="email">Email</label> <br />
+        <input type="email" name="email" id="email" placeholder="Enter your Email here" required autocomplete="email" autofill> <br />
+        <label for="password">Password</label> <br />
+        <input type="password" name="password" id="password" placeholder="Enter your password here" required  autocomplete="current-password" autofill> <br />
+         <p>Don&apos;t have an account? <span><a href="/register">Register</a></span></p><br /> <br />
+          <button class="btn">Log In</button>
+      </form>
+        <div class="quote">
+            <h2 class="title">Reading is a discount ticket to everywhere… and therapy that doesn&apos;t require an appointment.</h2>
+        </div>
+    </div>
+
+</main>
+<%- include('partials/footer') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

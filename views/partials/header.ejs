@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %>-BookAmour</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header>
+        <h1 class="title">BookAmour</h1>
+        <p class="tag-line">For those who live between the lines.</p>
+        <nav>
+      <ul>
+        <li class="protected"><a href="/home">Home</a></li>
+        <li class="protected"><a href="/Genres">Genres</a></li>
+        <li class="protected"><a href="/userSuggestions">Suggestions</a></li>
+        <li class="protected"><a href="/userRequests">Requests</a></li>
+        <li><a href="/about">About Us</a></li>
+      </ul>
+    </nav>
+    </header>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+          // Sets isLoggedIn for JavaScript. 
+          // Quotes matter for text values, but we use JSON.stringify to avoid errors and keep it a proper boolean.
+          
+        // const isLoggedIn = "<%= isLoggedIn ? 'true' : 'false' %>";
+        
+        const isLoggedIn = <%= JSON.stringify(isLoggedIn) %>;
+    </script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

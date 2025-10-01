@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "title": "Thriller / Suspense 🎯",
+    "description": "Gripping, fast-paced narratives full of danger, secrets, and shocking revelations that keep you hooked till the last word."
+  },
+  {
+    "id": 2,
+    "title": "Romance ❤️",
+    "description": "Heartfelt stories of love, passion, and relationships that make you smile, cry, and believe in happily-ever-afters."
+  },
+  {
+    "id": 3,
+    "title": "Mystery / Crime 🕵️‍♀️",
+    "description": "Intriguing whodunits and detective tales where every detail matters and solving the puzzle is half the fun."
+  },
+  {
+    "id": 4,
+    "title": "Psychological Fiction 🧠",
+    "description": "Intense, thought-provoking stories exploring emotions, morality, and the deepest layers of the human psyche."
+  },
+  {
+    "id": 5,
+    "title": "Fantasy 🏰",
+    "description": "Epic adventures set in magical worlds of heroes, mythical creatures, and enchanted realms beyond imagination."
+  },
+  {
+    "id": 6,
+    "title": "Biography / Memoir 🖋",
+    "description": "Step into the journeys of inspiring personalities as they share their struggles, achievements, and stories that shaped history."
+  },
+  {
+    "id": 7,
+    "title": "Self-Help / Motivational 🌱",
+    "description": "Practical guides and uplifting wisdom designed to boost confidence, success, and happiness in everyday life."
+  },
+  {
+    "id": 8,
+    "title": "Philosophy / Spirituality 🧘",
+    "description": "Thoughtful explorations on life, morality, and existence, blending timeless wisdom with spiritual reflections."
+  },
+  {
+    "id": 9,
+    "title": "History 📖",
+    "description": "Discover ancient civilizations, revolutions, and untold stories that shaped the world as we know it today."
+  },
+  {
+    "id": 10,
+    "title": "Travel Writing 🌍",
+    "description": "Vivid journeys and cultural encounters that let you explore the world’s beauty through the eyes of storytellers."
+  }
+]

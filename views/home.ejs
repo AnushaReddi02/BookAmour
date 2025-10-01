@@ -1,0 +1,23 @@
+<body>
+    <%- include('partials/header.ejs') %>
+    <main>
+       <div class="title-img">
+          <p>📖 BookAmour : From suspense to romance — your story awaits 🤍</p>
+       </div>
+
+       <div class="all-time-section">
+        <h2>All Time Hits</h2>
+            <div class="all-time">
+              <% for(book of books){ %>
+                  <div class="book-container">
+                    <div><img src= <%= book.book %> alt="<%= book.title %>"></div>
+                    <div><h3><%= book.title %></h3></div>
+                    <div><p><%= book.description %></p></div>
+                  </div>
+            <% } %>
+              </div>
+       </div>
+
+    </main>
+    <%- include('partials/footer') %>
+</body>

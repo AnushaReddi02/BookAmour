@@ -1,0 +1,44 @@
+<%- include('partials/header.ejs') %>
+
+<main>
+    <div class="requests-container">
+        <h2>All Suggestions</h2>
+
+        <!-- Buttons -->
+        <div style="margin-bottom: 20px;">
+            <a href="/suggest" class="btn" style="background:#4CAF50;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;margin-right:10px;">
+                Suggest
+            </a>
+            <a href="/mySuggestions" class="btn" style="background:#2196F3;color:white;padding:10px 15px;text-decoration:none;border-radius:5px;">
+                View Your Suggestions
+            </a>
+        </div>
+
+        <hr>
+
+        <% if (suggestions.length === 0) { %>
+            <p style="text-align:center;">No suggestions yet.</p>
+        <% } else { %>
+            <% suggestions.forEach(s => { %>
+                <div class="request-card">
+                    <p><%= s.description %></p>
+
+                    <% if (s.book_image) { %>
+                        <img src="/uploads/<%= s.book_image %>" alt="Suggestion Image" style="max-width:150px; display:block; margin-top:5px;">
+                    <% } %>
+
+                    <p>
+                        <small>
+                            Suggested by: <%= s.username %> |
+                            Genre: <%= s.genre %> |
+                            <%= new Date(s.created_at).toLocaleString() %>
+                        </small>
+                    </p>
+                </div>
+                <hr>
+            <% }) %>
+        <% } %>
+    </div>
+</main>
+
+<%- include('partials/footer.ejs') %>

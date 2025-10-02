@@ -1,18 +1,28 @@
 <%- include('partials/header.ejs') %>
+
 <main>
     <div class="req-container">
-        <h2>Suggesting to <span style="color: blue;">@<%= requestHolder %></span></h2>
+        <% if (requestHolder) { %>
+            <h2>Suggesting to <span style="color: blue;">@<%= requestHolder %></span></h2>
+        <% } else { %>
+            <h2>Make a Suggestion</h2>
+        <% } %>
 
-        <form action="/submitSuggestion/<%= requestId %>" method="POST" enctype="multipart/form-data">
-            <!-- Hidden input for request ID -->
-            <input type="hidden" name="requestId" value="<%= requestId %>">
+        <form action="<%= requestId ? '/submitSuggestion/' + requestId : '/submitSuggestion' %>" 
+              method="POST" enctype="multipart/form-data">
+
+            <% if (requestId) { %>
+                <input type="hidden" name="requestId" value="<%= requestId %>">
+            <% } %>
 
             <!-- Genre input -->
             <label for="genre">Genre:</label>
-            <input type="text" id="genre" name="genre" placeholder="Enter genre" required style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            <input type="text" id="genre" name="genre" placeholder="Enter genre" required 
+                   style="width: 100%; padding: 8px; margin-bottom: 10px;">
 
             <!-- Suggestion textarea -->
-            <textarea id="suggestion" name="suggestion" placeholder="Write your suggestion or reply here..." required style="width: 100%; padding: 8px;"></textarea>
+            <textarea id="suggestion" name="suggestion" placeholder="Write your suggestion or reply here..." required 
+                      style="width: 100%; padding: 8px;"></textarea>
 
             <!-- Image upload toggle -->
             <div class="upload-toggle">
@@ -22,12 +32,14 @@
 
             <!-- Hidden upload box -->
             <div class="image-upload" id="imageUploadBox" style="display:none; margin-top: 5px; position: relative;">
-                <label for="book_image" id="uploadLabel" style="cursor: pointer; text-align:center; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+                <label for="book_image" id="uploadLabel" 
+                       style="cursor: pointer; text-align:center; width:100%; height:100%; 
+                              display:flex; align-items:center; justify-content:center;">
                     📂 Click to upload
                 </label>
 
                 <input type="file" id="book_image" name="book_image" accept="image/*" style="display:none;">
-                <img id="previewImage" src="" alt="Preview" style="display:none;">
+                <img id="previewImage" src="" alt="Preview" style="display:none; margin-top:10px; max-width:150px;">
             </div>
 
             <br />

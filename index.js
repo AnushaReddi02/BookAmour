@@ -71,11 +71,12 @@ function getId() {
 
 // Create connection
 const connection = mysql.createConnection({
-    host: 'localhost',      // usually localhost
-    user: 'root',           // your MySQL username
-    password: 'harika',           // your MySQL password
-    database: 'bookamour',   // your database name
-    charset : 'utf8mb4'   // 👈 ensures emojis work
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    charset: 'utf8mb4'
 });
 
 

@@ -85,7 +85,7 @@ connection.query("SET NAMES utf8mb4;");
 connection.query("SET CHARACTER SET utf8mb4;");
 connection.query("SET character_set_connection = utf8mb4;");
 
-//Home page
+// Home page
 app.get("/", (req, res) => {
     if (!req.session.userEmail) return res.redirect("/login");
     let title = "Home";
@@ -97,6 +97,11 @@ app.get("/", (req, res) => {
         books,
         username: req.session.userName
     });
+});
+
+// Redirect /home to /
+app.get("/home", (req, res) => {
+    res.redirect("/");
 });
 
 

@@ -1,17 +1,20 @@
 <%- include('partials/header.ejs') %>
+
 <main>
     <div class="req-container">
         <h2><%= username %></h2>
 
-
-        <!-- enctype="multipart/form-data" is an HTML form attribute that you need when your form includes file uploads.
-        
-        By default, HTML forms send data in "application/x-www-form-urlencoded" format, which works fine for text fields. But files (like images) need a different format so they can be sent as binary data.
-        multipart/form-data tells the browser to send the form in multiple parts, including the file contents. -->
+        <!-- enctype="multipart/form-data" is needed when form has file uploads -->
         <form action="/userRequests" method="POST" enctype="multipart/form-data">
-           <!-- A hidden input so it gets submitted later: -->
-            <input type="hidden" name="genre" value="<%= genre %>">
-            <textarea id="request" name="request" placeholder="MAKE YOUR REQUEST HERE..." required></textarea>
+
+            <!-- Genre input -->
+            <label for="genre">Genre:</label>
+            <input type="text" id="genre" name="genre" placeholder="Enter genre" required 
+                   style="width: 100%; padding: 8px; margin-bottom: 10px;">
+
+            <!-- Request textarea -->
+            <textarea id="request" name="request" placeholder="MAKE YOUR REQUEST HERE..." required 
+                      style="width: 100%; padding: 8px;"></textarea>
 
             <!-- Ask user if they want to upload image -->
             <div class="upload-toggle">
@@ -22,18 +25,18 @@
             </div>
 
             <!-- Hidden upload box -->
-             <div class="image-upload" id="imageUploadBox" style="display:none; margin-top: 5px; position: relative;">
-                        <!-- Upload text (hidden once image is uploaded) -->
-                        <label for="book_image" id="uploadLabel" style="cursor: pointer; text-align:center; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
-                            📂 Click to upload
-                        </label>
+            <div class="image-upload" id="imageUploadBox" style="display:none; margin-top: 5px; position: relative;">
+                <!-- Upload text (hidden once image is uploaded) -->
+                <label for="book_image" id="uploadLabel" 
+                       style="cursor: pointer; text-align:center; width:100%; height:100%; 
+                              display:flex; align-items:center; justify-content:center;">
+                    📂 Click to upload
+                </label>
 
-                        <input type="file" id="book_image" name="book_image" accept="image/*" />
-
-                        <!-- Image preview (hidden by default) -->
-                        <img id="previewImage" src="" alt="Preview">
-                </div>
-
+                <input type="file" id="book_image" name="book_image" accept="image/*" style="display:none;">
+                <!-- Image preview -->
+                <img id="previewImage" src="" alt="Preview" style="display:none; margin-top:10px; max-width:150px;">
+            </div>
 
             <br />
             <button class="btn">REQUEST</button>

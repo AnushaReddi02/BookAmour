@@ -63,7 +63,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 function getId() {
     return faker.string.uuid();

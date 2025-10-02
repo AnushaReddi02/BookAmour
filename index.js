@@ -157,9 +157,18 @@ app.post("/register", (req, res) => {
 });
 
 //GET → show login-page
+// Handle GET request to /login route → shows login page
 app.get("/login", (req, res) => {
-    let title = 'Log-in';
-    let isLoggedIn = !!req.session.userEmail;
+    let title = "Log-in"; // Page title
+    let isLoggedIn = !!req.session.userEmail; // Check if user is already logged in
+
+    // If user is already logged in → redirect to home page
+    if (isLoggedIn) {
+        console.log("User already logged in:", req.session.userEmail);
+        return res.redirect("/"); 
+    }
+
+    // Render login page
     res.render("login", { title, isLoggedIn });
 });
 
@@ -168,46 +177,53 @@ app.post("/login", (req, res) => {
 
     // Destructure email and password from the request body and rename them
     let { email: loginEmail, password: loginPass } = req.body;
+
     // SQL query to select email and password from the usersRegistered table where email matches
     let q1 = `SELECT * FROM usersRegistered WHERE email = ?`;
+
     try {
         // Execute the query with the email value to replace the "?" placeholder
         connection.query(q1, [loginEmail], (error, result) => {
-            if (error) throw error;
+            if (error) {
+                console.error("Error during login query:", error);
+                return res.status(500).send("Server error");
+            }
 
             // Check if the query returned any rows (i.e., if the user exists)
             if (result.length === 0) {
-                return res.json({ status: "not_found" });
+                console.log("Login failed: Email not found →", loginEmail);
+                return res.redirect("/login"); // Redirect to login page if email not found
             }
 
-            let user = result[0]; // get the 1st matching user
+            let user = result[0]; // Get the first matching user
 
+            // Compare provided password and email with database values
             if (loginPass === user.password && loginEmail === user.email) {
-                // If both match → login is successful
 
                 // ===========================
                 // STORE SESSION DATA ON LOGIN
                 // ===========================
-                req.session.userEmail = loginEmail;
-                req.session.userName = user.first_name + " " + user.last_name;
-                req.session.userId = user.id;
-                req.session.isLoggedIn = true;
+                req.session.userEmail = loginEmail; // Store user email in session
+                req.session.userName = user.first_name + " " + user.last_name; // Store full name in session
+                req.session.userId = user.id; // Store user ID in session
+                req.session.isLoggedIn = true; // Mark user as logged in
 
-                res.json({ status: "success" });
-            }
+                console.log("Login successful for:", loginEmail);
 
-            else {
-                // If password doesn't match → send wrong_password status
-                res.json({ status: "wrong_password" });
+                return res.redirect("/"); // Redirect to home page on successful login
+            } else {
+                // Password mismatch case
+                console.log("Login failed: Wrong password for", loginEmail);
+                return res.redirect("/login"); // Redirect back to login page
             }
         });
     } catch (error) {
         // If any error occurs during execution → log it and send generic error status
-        console.log(error);
-        res.json({ status: "error" });
+        console.error("Unexpected error during login:", error);
+        return res.status(500).send("Server error");
     }
-    // res.redirect("/home");
 });
+
 
 app.get("/genres", (req, res) => {
     let title = 'Genre';

@@ -4,8 +4,17 @@
 It allows users to register, login, request books, suggest books, like/dislike requests, and explore genres.  
 The app focuses on creating a vibrant community where readers can share and discover thrilling book recommendations. 🕵️‍♀️✨  
 
-> *"A room without books is like a body without a soul." — Marcus Tullius Cicero* 📚💫  
-> *"Books are a uniquely portable magic." — Stephen King* ✨  
+---
+
+## 💬 Inspirational Quotes
+
+> 🌟 **_"A room without books is like a body without a soul."_** — *Marcus Tullius Cicero* 📚💫  
+>
+> 🌟 **_"Books are a uniquely portable magic."_** — *Stephen King* ✨  
+>
+> 🌟 **_"A good book is the precious life-blood of a master spirit."_** — *John Milton* 📖💡  
+>
+> 🌟 **_"A website that feels like home is a work of art."_** 🎨💻
 
 ---
 
@@ -36,12 +45,18 @@ The app focuses on creating a vibrant community where readers can share and disc
 ---
 
 ## 📸 Screenshots
-*(Add your project screenshots here)*  
 
-Example:  
-![Home Page](screenshots/home.png)  
-![Genre Page](screenshots/genre.png)  
-![Request Page](screenshots/request.png)  
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AnushaReddi02/BookAmour/main/home.png" alt="Home Page" width="800" style="border: 2px solid #ccc; border-radius: 10px; margin-bottom: 20px;">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AnushaReddi02/BookAmour/main/genre.png" alt="Genre Page" width="800" style="border: 2px solid #ccc; border-radius: 10px; margin-bottom: 20px;">
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AnushaReddi02/BookAmour/main/about.png" alt="About Page" width="800" style="border: 2px solid #ccc; border-radius: 10px;">
+</p>
 
 ---
 
@@ -55,9 +70,6 @@ BookAmour was a delightful and enriching journey 📚✨.
 It taught me not only how to build a full-stack application but also how to deploy it successfully using **Clever Cloud** for database hosting and **Render** for application deployment.  
 
 This project strengthened my skills in **Node.js**, **MySQL integration**, **session management**, and **environment configuration for cloud deployment**.  
-
-> *"A good book is the precious life-blood of a master spirit." — John Milton*  
-> *"A website that feels like home is a work of art."* 🎨💻  
 
 I now understand the full lifecycle of a web project — from development to deployment — and feel confident to create even more engaging and beautiful applications in the future. 💪🚀  
 

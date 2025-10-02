@@ -86,11 +86,11 @@ connection.query("SET CHARACTER SET utf8mb4;");
 connection.query("SET character_set_connection = utf8mb4;");
 
 //Home page
-app.get("/home", (req, res) => {
-    if (!req.session.userEmail) return res.redirect("/"); // Redirect to register if not logged in
-    let title = 'Home';
+app.get("/", (req, res) => {
+    if (!req.session.userEmail) return res.redirect("/login");
+    let title = "Home";
     let isLoggedIn = !!req.session.userEmail;
-    let books = require('./books.json'); // load the books data
+    let books = require("./books.json");
     res.render("home", {
         title,
         isLoggedIn,
@@ -99,8 +99,9 @@ app.get("/home", (req, res) => {
     });
 });
 
+
 // GET → show registration page
-app.get("/", (req, res) => {
+app.get("/register", (req, res) => {
     let title = "Register";
     let isLoggedIn = !!req.session.userEmail;
     res.render("register", { title, isLoggedIn });

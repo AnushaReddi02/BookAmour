@@ -235,3 +235,90 @@ if (fileInput) {
   });
 }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    // ✅ Check if user is logged in (set from server-side)
+    const isLoggedIn = !!window.isLoggedIn;
+
+    // ==============================
+    // HANDLE LIKE / DISLIKE BUTTONS
+    // ==============================
+    document.querySelectorAll(".btn-like, .btn-dislike").forEach(button => {
+        button.addEventListener("click", async (e) => {
+            e.preventDefault(); // Stop form from submitting normally
+
+            // 🔒 If user is not logged in → show SweetAlert
+            if (!isLoggedIn) {
+                Swal.fire({
+                    icon: "info", // Info icon
+                    title: "Login Required", // Pop-up title
+                    text: "Please login or register to vote 👍👎", // Pop-up text
+                    confirmButtonText: "Go to Login" // Button text
+                }).then(() => {
+                    window.location.href = "/login"; // Redirect to login page
+                });
+                return; // Stop execution
+            }
+
+            // 📌 Get the form containing this button
+            const form = button.closest("form");
+
+            // 📌 Get the form's action URL (route to call)
+            const action = form.getAttribute("action");
+
+            try {
+                // 🔄 Send POST request to like/dislike route
+                let res = await fetch(action, { method: "POST" });
+
+                // 📌 Parse JSON response from server
+                let data = await res.json();
+
+                // 👍 If vote was successful → show SweetAlert
+                if (data.success) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Vote Recorded",
+                        timer: 1000, // Auto close after 1 sec
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload(); // Reload to show updated votes
+                    });
+                } else {
+                    // ❌ Error case
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Vote could not be recorded."
+                    });
+                }
+            } catch (err) {
+                console.error("Error:", err); // Log error in console
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Something went wrong."
+                });
+            }
+        });
+    });
+
+    // ==============================
+    // HANDLE SUGGEST BUTTONS
+    // ==============================
+    document.querySelectorAll(".btn-suggest").forEach(button => {
+        button.addEventListener("click", (e) => {
+            // 🔒 If user is not logged in → prevent action and show popup
+            if (!isLoggedIn) {
+                e.preventDefault(); // Stop navigation
+                Swal.fire({
+                    icon: "info",
+                    title: "Login Required",
+                    text: "Please login or register to suggest a book 💖",
+                    confirmButtonText: "Go to Login"
+                }).then(() => {
+                    window.location.href = "/login"; // Redirect to login page
+                });
+            }
+        });
+    });
+});

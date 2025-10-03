@@ -237,27 +237,27 @@ if (fileInput) {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    // ✅ Check if user is logged in (set from server-side)
-    const isLoggedIn = !!window.isLoggedIn;
+    // ✅ Directly use boolean from server (true if logged in, false otherwise)
+    const isLoggedIn = window.isLoggedIn;
 
     // ==============================
     // HANDLE LIKE / DISLIKE BUTTONS
     // ==============================
     document.querySelectorAll(".btn-like, .btn-dislike").forEach(button => {
         button.addEventListener("click", async (e) => {
-            e.preventDefault(); // Stop form from submitting normally
+            e.preventDefault(); // ❌ Prevent default form submission
 
             // 🔒 If user is not logged in → show SweetAlert
             if (!isLoggedIn) {
                 Swal.fire({
-                    icon: "info", // Info icon
-                    title: "Login Required", // Pop-up title
-                    text: "Please login or register to vote 👍👎", // Pop-up text
-                    confirmButtonText: "Go to Login" // Button text
+                    icon: "info", // ℹ️ Info icon
+                    title: "Login Required", // 📝 Pop-up title
+                    text: "Please login or register to vote 👍👎", // 📜 Pop-up text
+                    confirmButtonText: "Go to Login" // 🔘 Button text
                 }).then(() => {
-                    window.location.href = "/login"; // Redirect to login page
+                    window.location.href = "/login"; // 🔄 Redirect to login page
                 });
-                return; // Stop execution
+                return; // ⛔ Stop further execution
             }
 
             // 📌 Get the form containing this button
@@ -278,10 +278,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     Swal.fire({
                         icon: "success",
                         title: "Vote Recorded",
-                        timer: 1000, // Auto close after 1 sec
+                        timer: 1000, // ⏳ Auto close after 1 sec
                         showConfirmButton: false
                     }).then(() => {
-                        location.reload(); // Reload to show updated votes
+                        location.reload(); // 🔄 Reload to show updated votes
                     });
                 } else {
                     // ❌ Error case
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
             } catch (err) {
-                console.error("Error:", err); // Log error in console
+                console.error("Error:", err); // 📟 Log error in console
                 Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -309,14 +309,14 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", (e) => {
             // 🔒 If user is not logged in → prevent action and show popup
             if (!isLoggedIn) {
-                e.preventDefault(); // Stop navigation
+                e.preventDefault(); // ❌ Stop navigation
                 Swal.fire({
-                    icon: "info",
-                    title: "Login Required",
-                    text: "Please login or register to suggest a book 💖",
-                    confirmButtonText: "Go to Login"
+                    icon: "info", // ℹ️ Info icon
+                    title: "Login Required", // 📝 Pop-up title
+                    text: "Please login or register to suggest a book 💖", // 📜 Pop-up text
+                    confirmButtonText: "Go to Login" // 🔘 Button text
                 }).then(() => {
-                    window.location.href = "/login"; // Redirect to login page
+                    window.location.href = "/login"; // 🔄 Redirect to login page
                 });
             }
         });

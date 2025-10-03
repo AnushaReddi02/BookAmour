@@ -33,10 +33,10 @@
                         <button type="submit" class="btn-suggest">Suggest (<%= request.suggestions_count || 0 %>)</button>
                     </form>
 
-                    <form action="/like/<%= request.id %>" method="POST" style="display:inline;">
+                    <form action="/vote/<%= request.id %>/like" method="POST" style="display:inline;">
                         <button type="submit" class="btn-like">👍 Like (<%= request.likes || 0 %>)</button>
                     </form>
-                    <form action="/dislike/<%= request.id %>" method="POST" style="display:inline;">
+                    <form action="/vote/<%= request.id %>/dislike" method="POST" style="display:inline;">
                         <button type="submit" class="btn-dislike">👎 Dislike (<%= request.dislikes || 0 %>)</button>
                     </form>
 

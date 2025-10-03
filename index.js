@@ -377,21 +377,30 @@ app.get("/userRequests", (req, res) => {
 // ===========================
 // Routes for Like, Dislike, Suggest
 // ===========================
-app.post("/like/:id", (req, res) => {
-    connection.query(`UPDATE posts SET likes = likes + 1 WHERE id = ?`, [req.params.id], err => {
-        if (err) return res.status(500).json({ error: err.message });
+// Vote route for likes/dislikes
+app.post("/vote/:postId/:type", (req, res) => {
+    const { postId, type } = req.params; // type should be 'like' or 'dislike'
+    const userId = req.session.userId;   // logged-in user’s ID
+
+    if (!userId) {
+        return res.status(401).send("You must be logged in to vote.");
+    }
+
+    const sql = `
+        INSERT INTO votes (post_id, user_id, vote_type)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type)
+    `;
+
+    connection.query(sql, [postId, userId, type], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Error recording vote");
+        }
         res.json({ success: true });
     });
 });
 
-
-// Dislike:
-app.post("/dislike/:id", (req, res) => {
-    connection.query(`UPDATE posts SET dislikes = dislikes + 1 WHERE id = ?`, [req.params.id], err => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ success: true });
-    });
-});
 
 //suggest form
 // GET → Show suggestion form & all suggestions for a request

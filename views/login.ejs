@@ -1,21 +1,67 @@
 <%- include('partials/header') %>
-<main>
 
+<main>
+    <!-- LOGIN FORM WRAPPER -->
     <div class="log-wrapper">
 
+        <!-- Login Form -->
+        <!-- This form will be handled by app.js using fetch API -->
         <form class="log-container" id="loginForm">
-        <label for="email">Email</label> <br />
-        <input type="email" name="email" id="email" placeholder="Enter your Email here" required autocomplete="email" autofill> <br />
-        <label for="password">Password</label> <br />
-        <input type="password" name="password" id="password" placeholder="Enter your password here" required  autocomplete="current-password" autofill> <br />
-         <p>Don&apos;t have an account? <span><a href="/register">Register</a></span></p><br /> <br />
-          <button class="btn">Log In</button>
-      </form>
+            
+            <!-- Email Label and Input -->
+            <label for="email">Email</label> <br />
+            <input 
+                type="email" 
+                name="email" 
+                id="email" 
+                placeholder="Enter your Email here" 
+                required 
+                autocomplete="email" 
+                autofill
+            /> <br />
+
+            <!-- Password Label and Input -->
+            <label for="password">Password</label> <br />
+            <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                placeholder="Enter your password here" 
+                required  
+                autocomplete="current-password" 
+                autofill
+            /> <br />
+
+            <!-- Link to Registration Page -->
+            <p>
+                Don&apos;t have an account? 
+                <span><a href="/register">Register</a></span>
+            </p>
+            <br /><br />
+
+            <!-- Submit Button -->
+            <button class="btn" type="submit">Log In</button>
+        </form>
+
+        <!-- Motivational Quote -->
         <div class="quote">
-            <h2 class="title">Reading is a discount ticket to everywhere… and therapy that doesn&apos;t require an appointment.</h2>
+            <h2 class="title">
+                Reading is a discount ticket to everywhere… and therapy that doesn&apos;t require an appointment.
+            </h2>
         </div>
     </div>
-
 </main>
+
 <%- include('partials/footer') %>
+
+<!-- SweetAlert2 library for popups -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Pass backend login status to frontend -->
+<script>
+    // ✅ This value is set in backend to check if user is logged in
+    window.isLoggedIn = <%= JSON.stringify(isLoggedIn) %>;
+</script>
+
+<!-- Main frontend logic -->
+<script src="/js/app.js"></script>

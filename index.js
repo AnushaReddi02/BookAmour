@@ -126,7 +126,7 @@ app.post("/register", (req, res) => {
     connection.query(q1, [email], (error, result) => {
         if (error) {
             console.error("Error checking email:", error);
-            return res.status(500).send("Server error");
+            return res.status(500).json({ status: "error", message: "Server error" });
         }
 
         if (result.length > 0) {
@@ -138,7 +138,7 @@ app.post("/register", (req, res) => {
         connection.query(q2, [data], (error, result) => {
             if (error) {
                 console.error("Error inserting user:", error);
-                return res.status(500).send("Server error");
+                return res.status(500).json({ status: "error", message: "Server error" });
             }
 
             console.log("User registered successfully:", email);
@@ -151,10 +151,11 @@ app.post("/register", (req, res) => {
             req.session.userId = id; // save user ID
             req.session.isLoggedIn = true; // mark logged in
 
-            res.json({ status: "registered" }); // send flag to frontend
+            return res.json({ status: "registered" }); // send flag to frontend
         });
     });
 });
+
 
 //GET → show login-page
 // Handle GET request to /login route → shows login page
@@ -186,13 +187,13 @@ app.post("/login", (req, res) => {
         connection.query(q1, [loginEmail], (error, result) => {
             if (error) {
                 console.error("Error during login query:", error);
-                return res.status(500).send("Server error");
+                return res.status(500).json({ status: "error", message: "Server error" });
             }
 
             // Check if the query returned any rows (i.e., if the user exists)
             if (result.length === 0) {
                 console.log("Login failed: Email not found →", loginEmail);
-                return res.redirect("/login"); // Redirect to login page if email not found
+                return res.json({ status: "user_not_found" }); // send flag to frontend
             }
 
             let user = result[0]; // Get the first matching user
@@ -205,24 +206,25 @@ app.post("/login", (req, res) => {
                 // ===========================
                 req.session.userEmail = loginEmail; // Store user email in session
                 req.session.userName = user.first_name + " " + user.last_name; // Store full name in session
-                req.session.userId = user.id; // Store user ID in session
+                req.session.userId = user.id; // Store user ID
                 req.session.isLoggedIn = true; // Mark user as logged in
 
                 console.log("Login successful for:", loginEmail);
 
-                return res.redirect("/"); // Redirect to home page on successful login
+                return res.json({ status: "success" }); // send flag to frontend
             } else {
                 // Password mismatch case
                 console.log("Login failed: Wrong password for", loginEmail);
-                return res.redirect("/login"); // Redirect back to login page
+                return res.json({ status: "wrong_password" }); // send flag to frontend
             }
         });
     } catch (error) {
         // If any error occurs during execution → log it and send generic error status
         console.error("Unexpected error during login:", error);
-        return res.status(500).send("Server error");
+        return res.status(500).json({ status: "error", message: "Server error" });
     }
 });
+
 
 
 app.get("/genres", (req, res) => {

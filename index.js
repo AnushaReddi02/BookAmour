@@ -379,29 +379,68 @@ app.get("/userRequests", (req, res) => {
 // ===========================
 // Routes for Like, Dislike, Suggest
 // ===========================
-// ✅ Route to handle Like/Dislike actions for each post
+// ✅ Route to handle Like/Dislike actions for each post (AJAX / returns JSON)
 app.post("/vote/:postId/:type", (req, res) => {
-  
+
   // Extract post ID and vote type (like/dislike) from URL parameters
   const { postId, type } = req.params;
 
-  // ✅ Decide which column to update — either 'likes' or 'dislikes'
-  const column = type === "like" ? "likes" : "dislikes";
+  // Make sure user is logged in (session must exist)
+  const userId = req.session.userId;
+  if (!userId) {
+    // respond with JSON so frontend can show login popup
+    return res.status(401).json({ success: false, error: "not_logged_in" });
+  }
 
-  // ✅ SQL query to increase the selected column count by 1 for the given post
-  const sql = `UPDATE posts SET ${column} = ${column} + 1 WHERE id = ?`;
+  // Normalize vote type
+  if (type !== "like" && type !== "dislike") {
+    return res.status(400).json({ success: false, error: "invalid_vote_type" });
+  }
 
-  // Execute the query
-  connection.query(sql, [postId], (err) => {
+  // ✅ Insert/update vote in votes table (prevents double votes)
+  const upsertVoteSql = `
+    INSERT INTO votes (post_id, user_id, vote_type)
+    VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type)
+  `;
+
+  connection.query(upsertVoteSql, [postId, userId, type], (err) => {
     if (err) {
-      // ❌ Handle any database errors
-      return res.status(500).send("Error updating votes");
+      console.error("Error inserting/updating vote:", err);
+      return res.status(500).json({ success: false, error: "db_error" });
     }
 
-    // ✅ After successful update, redirect to userRequests page to refresh data
-    res.redirect("/userRequests");
+    // ✅ Recompute counts from votes table (source of truth)
+    const countSql = `
+      SELECT 
+        SUM(vote_type = 'like') AS likes,
+        SUM(vote_type = 'dislike') AS dislikes
+      FROM votes
+      WHERE post_id = ?
+    `;
+    connection.query(countSql, [postId], (err2, rows) => {
+      if (err2) {
+        console.error("Error fetching vote counts:", err2);
+        return res.status(500).json({ success: false, error: "db_error" });
+      }
+
+      const likes = rows[0].likes ? Number(rows[0].likes) : 0;
+      const dislikes = rows[0].dislikes ? Number(rows[0].dislikes) : 0;
+
+      // (optional) sync totals back to posts table for quick read later
+      connection.query(
+        `UPDATE posts SET likes = ?, dislikes = ? WHERE id = ?`,
+        [likes, dislikes, postId],
+        (err3) => {
+          if (err3) console.error("Warning: could not update posts table counts", err3);
+          // Return JSON response with the new counts
+          return res.json({ success: true, likes, dislikes });
+        }
+      );
+    });
   });
 });
+
 
 
 //suggest form

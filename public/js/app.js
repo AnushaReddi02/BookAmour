@@ -237,7 +237,7 @@ if (fileInput) {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    // ✅ Directly use boolean from server (true if logged in, false otherwise)
+    // ✅ Grab the login status flag set from server-side
     const isLoggedIn = window.isLoggedIn;
 
     // ==============================
@@ -245,54 +245,87 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==============================
     document.querySelectorAll(".btn-like, .btn-dislike").forEach(button => {
         button.addEventListener("click", async (e) => {
-            e.preventDefault(); // ❌ Prevent default form submission
+            e.preventDefault(); // Prevent default form submission
 
             // 🔒 If user is not logged in → show SweetAlert
             if (!isLoggedIn) {
                 Swal.fire({
-                    icon: "info", // ℹ️ Info icon
-                    title: "Login Required", // 📝 Pop-up title
-                    text: "Please login or register to vote 👍👎", // 📜 Pop-up text
-                    confirmButtonText: "Go to Login" // 🔘 Button text
+                    icon: "info",
+                    title: "Login Required",
+                    text: "Please login or register to vote 👍👎",
+                    confirmButtonText: "Go to Login"
                 }).then(() => {
-                    window.location.href = "/login"; // 🔄 Redirect to login page
+                    window.location.href = "/login"; // Redirect after click
                 });
-                return; // ⛔ Stop further execution
+                return;
             }
 
-            // 📌 Get the form containing this button
+            // 📌 Find the form containing this button
             const form = button.closest("form");
+            if (!form) {
+                console.error("No form found for this button.");
+                return;
+            }
 
-            // 📌 Get the form's action URL (route to call)
+            // 📌 Get the form's action URL (backend endpoint)
             const action = form.getAttribute("action");
+            if (!action) {
+                console.error("No action URL found for form.");
+                return;
+            }
 
             try {
-                // 🔄 Send POST request to like/dislike route
-                let res = await fetch(action, { method: "POST" });
+                // 🔄 Send POST request to backend
+                const res = await fetch(action, {
+                    method: "POST",
+                    credentials: "same-origin", // Ensure cookies are sent
+                    headers: { "Accept": "application/json" }
+                });
 
-                // 📌 Parse JSON response from server
-                let data = await res.json();
+                // 📌 If unauthorized (401) → show login popup
+                if (res.status === 401) {
+                    Swal.fire({
+                        icon: "info",
+                        title: "Login Required",
+                        text: "Please login to vote.",
+                        confirmButtonText: "Go to Login"
+                    }).then(() => {
+                        window.location.href = "/login";
+                    });
+                    return;
+                }
 
-                // 👍 If vote was successful → show SweetAlert
+                // 📌 Parse response JSON
+                const data = await res.json();
+
+                // 👍 If vote is successful → update UI
                 if (data.success) {
+                    const card = button.closest(".request-card") || document;
+                    const likeBtn = card.querySelector(".btn-like");
+                    const dislikeBtn = card.querySelector(".btn-dislike");
+
+                    if (likeBtn && typeof data.likes === "number") {
+                        likeBtn.innerText = `👍 Like (${data.likes})`;
+                    }
+                    if (dislikeBtn && typeof data.dislikes === "number") {
+                        dislikeBtn.innerText = `👎 Dislike (${data.dislikes})`;
+                    }
+
                     Swal.fire({
                         icon: "success",
                         title: "Vote Recorded",
-                        timer: 1000, // ⏳ Auto close after 1 sec
+                        timer: 1000,
                         showConfirmButton: false
-                    }).then(() => {
-                        location.reload(); // 🔄 Reload to show updated votes
                     });
                 } else {
-                    // ❌ Error case
                     Swal.fire({
                         icon: "error",
                         title: "Error",
-                        text: "Vote could not be recorded."
+                        text: data.error || "Vote could not be recorded."
                     });
                 }
             } catch (err) {
-                console.error("Error:", err); // 📟 Log error in console
+                console.error("Vote request failed:", err);
                 Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -309,14 +342,14 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", (e) => {
             // 🔒 If user is not logged in → prevent action and show popup
             if (!isLoggedIn) {
-                e.preventDefault(); // ❌ Stop navigation
+                e.preventDefault();
                 Swal.fire({
-                    icon: "info", // ℹ️ Info icon
-                    title: "Login Required", // 📝 Pop-up title
-                    text: "Please login or register to suggest a book 💖", // 📜 Pop-up text
-                    confirmButtonText: "Go to Login" // 🔘 Button text
+                    icon: "info",
+                    title: "Login Required",
+                    text: "Please login or register to suggest a book 💖",
+                    confirmButtonText: "Go to Login"
                 }).then(() => {
-                    window.location.href = "/login"; // 🔄 Redirect to login page
+                    window.location.href = "/login";
                 });
             }
         });

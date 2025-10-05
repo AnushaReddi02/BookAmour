@@ -379,28 +379,28 @@ app.get("/userRequests", (req, res) => {
 // ===========================
 // Routes for Like, Dislike, Suggest
 // ===========================
-// Vote route for likes/dislikes
+// ✅ Route to handle Like/Dislike actions for each post
 app.post("/vote/:postId/:type", (req, res) => {
-    const { postId, type } = req.params; // type should be 'like' or 'dislike'
-    const userId = req.session.userId;   // logged-in user’s ID
+  
+  // Extract post ID and vote type (like/dislike) from URL parameters
+  const { postId, type } = req.params;
 
-    if (!userId) {
-        return res.status(401).send("You must be logged in to vote.");
+  // ✅ Decide which column to update — either 'likes' or 'dislikes'
+  const column = type === "like" ? "likes" : "dislikes";
+
+  // ✅ SQL query to increase the selected column count by 1 for the given post
+  const sql = `UPDATE posts SET ${column} = ${column} + 1 WHERE id = ?`;
+
+  // Execute the query
+  connection.query(sql, [postId], (err) => {
+    if (err) {
+      // ❌ Handle any database errors
+      return res.status(500).send("Error updating votes");
     }
 
-    const sql = `
-        INSERT INTO votes (post_id, user_id, vote_type)
-        VALUES (?, ?, ?)
-        ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type)
-    `;
-
-    connection.query(sql, [postId, userId, type], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send("Error recording vote");
-        }
-        res.json({ success: true });
-    });
+    // ✅ After successful update, redirect to userRequests page to refresh data
+    res.redirect("/userRequests");
+  });
 });
 
 
